@@ -14,13 +14,13 @@ class Song:
 
     def printInfo( self ):        
         
-        print( self._album ) 
-        print( self._artist )
-        print( self._date )
-        print( self._file )
-        print( self._genre )
-        print( self._time )
-        print( self._title )
+        print( "Album: %s" % self._album ) 
+        print( "Artist: %s" % self._artist )
+        print( "Date: %s" % self._date )
+        print( "Filename: %s " % self._file )
+        print( "Genre: %s" % self._genre )
+        print( "Len: %ss" % self._time )
+        print( "Title: %s" % self._title )
 
 
     def getInfo( self ):
