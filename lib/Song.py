@@ -1,3 +1,6 @@
+#!/usr/bin/python3 
+from lib import lastfm
+
 class Song:
     
 
@@ -10,7 +13,7 @@ class Song:
         self._genre = d_song['genre']
         self._time = d_song['time']
         self._title = d_song['title']
-        
+        self._aart = lastfm.getAlbumArt( self._artist, self._title )         
 
     def printInfo( self ):        
         
@@ -21,7 +24,7 @@ class Song:
         print( "Genre: %s" % self._genre )
         print( "Len: %ss" % self._time )
         print( "Title: %s" % self._title )
-
+        print( "Art: %s" % self._aart )
 
     def getInfo( self ):
     
@@ -34,5 +37,5 @@ class Song:
         s["_genre"] = self._genre
         s["_time"] = self._time
         s["_title"] = self._title
-
+        s["_aart"] = self._aart
         return s
