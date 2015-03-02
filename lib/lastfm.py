@@ -2,8 +2,7 @@
 import requests
 import json
 
-key = "memes"
-
+key = open('lib/lfmkey').readline().rstrip('\n')
 def getAlbumArt( artist, track ):
     
     artist = artist.replace(' ','%20')    
