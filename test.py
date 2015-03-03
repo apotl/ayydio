@@ -16,7 +16,7 @@ def makeChoice():
 	return choice
 
 def checkSong_py():
-	print( '\nGive the file location of the song relative to mpd\'s root: '  )
+	print( '\nGive the file location of the song: '  )
 	song_loc = input()
 	client = conToMpd()
 		
