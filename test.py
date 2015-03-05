@@ -12,6 +12,7 @@ def conToMpd():
 def makeChoice():
 	print( 'Select a lib to check: ' )
 	print( '   (1) Song.py' )
+	print( '   (e) Exit test.py' )
 	choice = input()
 	return choice
 
@@ -20,25 +21,15 @@ def checkSong_py():
 	song_loc = input()
 	client = conToMpd()
 		
-	print( 'Testing instantiation...' )
+	print( 'Testing instantiation...', end = '' )
 	song_to_check = Song( song_loc )
-	print( 'Album name: ' + song_to_check._album )
-	print( 'Artist name: ' + song_to_check._artist )
-	print( 'Date of song: ' + song_to_check._date )
-	print( 'File name: ' + song_to_check._file )
-	print( 'Song genre: ' + song_to_check._genre )
-	print( 'Length: ' + song_to_check._time )
-	print( 'Song title: ' + song_to_check._title )
-	print( 'Album art link: ' + song_to_check._aart + '\n' )
 	print( 'Instantiation OK.' )
 
-	print( 'Testing getInfo()...' )
-	song_info_dict = song_to_check.getInfo()
-	for tag in song_info_dict:
-		print( song_info_dict[tag] )
+	print( 'Testing getInfo()...', end = '' )
+	song_to_check.getInfo()
 	print( 'getInfo() OK.' )
 
-	print( 'Testing printInfo()...' )
+	print( 'Testing printInfo()...', end = '' )
 	song_to_check.printInfo()
 	print( 'printInfo() OK.' )
 
@@ -49,9 +40,7 @@ while checking == True:
 	choice = makeChoice()
 	if choice == '1':
 		checkSong_py()
+	elif choice == 'e':
+		checking = False
 	else:
 		print( '\nERROR: Given option invalid')
-	print( 'Test another lib? (type \'n\' to exit))' )
-	test = input()
-	if test == 'n':
-		checking = False
