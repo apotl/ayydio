@@ -39,20 +39,21 @@ class Song:
 		print( 'Art: ' + self._aart )
 
 	def getInfo( self ):
-		if not self._ok:
-			return
 		s = {}
-		s['album'] = self._album
-		s['artist'] = self._artist
-		s['date'] = self._date
-		s['file'] = self._file
-		s['genre'] = self._genre
-		s['title'] = self._title
-		s['aart'] = self._aart
-		s['track'] = self._track
-		s['ttrack'] = self._ttrack
-		s['disc'] = self._disc
-		s['tdisc'] = self._tdisc
-		s['comment'] = self._comment
-		s['aart'] = self._aart
+		if not self._ok:
+			s['file'] = ''
+		else:
+			s['album'] = self._album
+			s['artist'] = self._artist
+			s['date'] = self._date
+			s['file'] = self._file
+			s['genre'] = self._genre
+			s['title'] = self._title
+			s['aart'] = self._aart
+			s['track'] = self._track
+			s['ttrack'] = self._ttrack
+			s['disc'] = self._disc
+			s['tdisc'] = self._tdisc
+			s['comment'] = self._comment
+			s['aart'] = self._aart
 		return s

@@ -5,26 +5,33 @@ def conToMpd():
 	con = MPDClient()
 	con.timeout = 10
 	con.idletimeout = None
-	con.connect( "localhost", 6600 )
+	con.connect( 'localhost', 6600 )
 	return con
 
 class Database:
-
 
 	def __init__( self ):
 		self._con = MPDClient()
 		self._con.timeout = 10
 		self._con.idletimeout = None
-		self._con.connect( "localhost", 6600 )
+		self._con.connect( 'localhost', 6600 )
 
 	def addToDb( self, song_obj ):
-		self._con.update( song_obj['file'] );
+		temp = song_obj.getInfo()['file']
+		while self._con.find( 'file', temp) == []:
+			try:
+				temp = temp.split( '/', 1 )[1]
+			except IndexError:
+				print( 'ERROR: Could not add.  Please put the song (if it exists) under the mpd root.' )
+				break
+		if self._con.find( 'file', temp) != []:
+			self._con.update( temp )
 		
 	def listDbDir( self, dir_loc ):
 		listings = {}
 		for listing in self._con.lsinfo( dir_loc ):
-			temp = Song( listing['file'])
-			listings.append( temp)
+			temp = Song( listing['file'] )
+			listings.append( temp )
 		return listings
 	
 	def __del__( self ):
