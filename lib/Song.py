@@ -1,41 +1,59 @@
 #!/usr/bin/python3 
 from lib import lastfm
+import stagger
+from stagger.id3 import *
+
 
 class Song:
-    
 
-    def __init__( self, d_song ):
-        
-        self._album = d_song['album']
-        self._artist = d_song['artist']
-        self._date = d_song['date']
-        self._file = d_song['file']
-        self._genre = d_song['genre']
-        self._time = d_song['time']
-        self._title = d_song['title']
-        self._aart = lastfm.getAlbumArt( self._artist, self._title )         
+	def __init__( self, d_song ):
+		try:
+			self._album = stagger.read_tag( d_song ).album
+			self._artist = stagger.read_tag( d_song ).artist
+			self._date = stagger.read_tag( d_song ).date
+			self._file = d_song
+			self._genre = stagger.read_tag( d_song ).genre
+			self._title = stagger.read_tag( d_song ).title
+			self._track = stagger.read_tag( d_song ).track
+			self._ttrack = stagger.read_tag( d_song ).track_total
+			self._disc = stagger.read_tag( d_song ).disc
+			self._tdisc = stagger.read_tag( d_song ).disc_total
+			self._comment = stagger.read_tag( d_song ).comment
+			self._aart = lastfm.getAlbumArt( self._artist, self._title )
+			self._ok = True
+		except IOError:
+			self._ok = False
 
-    def printInfo( self ):        
-        
-        print( "Album: %s" % self._album ) 
-        print( "Artist: %s" % self._artist )
-        print( "Date: %s" % self._date )
-        print( "Filename: %s " % self._file )
-        print( "Genre: %s" % self._genre )
-        print( "Len: %ss" % self._time )
-        print( "Title: %s" % self._title )
-        print( "Art: %s" % self._aart )
+	def printInfo( self ):
+		if not self._ok:
+			return
+		print( 'Album: ' + self._album ) 
+		print( 'Artist: ' + self._artist )
+		print( 'Date: ' + self._date )
+		print( 'Filename: ' + self._file )
+		print( 'Genre: ' + self._genre )
+		print( 'Title: ' + self._title )
+		print( 'Track ' + str( self._track ) + ' of ' + str( self._ttrack ) )
+		print( 'Disc ' + str( self._disc ) + ' of ' + str( self._tdisc ) )
+		print( 'Comment: ' + self._comment )
+		print( 'Art: ' + self._aart )
 
-    def getInfo( self ):
-    
-        s = {}
-        
-        s["_album"] = self._album
-        s["_artist"] = self._artist
-        s["_date"] = self._date
-        s["_file"] = self._file
-        s["_genre"] = self._genre
-        s["_time"] = self._time
-        s["_title"] = self._title
-        s["_aart"] = self._aart
-        return s
+	def getInfo( self ):
+		s = {}
+		if not self._ok:
+			s['file'] = ''
+		else:
+			s['album'] = self._album
+			s['artist'] = self._artist
+			s['date'] = self._date
+			s['file'] = self._file
+			s['genre'] = self._genre
+			s['title'] = self._title
+			s['aart'] = self._aart
+			s['track'] = self._track
+			s['ttrack'] = self._ttrack
+			s['disc'] = self._disc
+			s['tdisc'] = self._tdisc
+			s['comment'] = self._comment
+			s['aart'] = self._aart
+		return s

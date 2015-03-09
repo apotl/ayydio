@@ -2,7 +2,11 @@
 import requests
 import json
 
-key = open('lib/lfmkey').readline().rstrip('\n')
+try:
+	key = open('lib/lfmkey').readline().rstrip('\n')
+except IOError:
+	key = ''
+
 def getAlbumArt( artist, track ):
     
     artist = artist.replace(' ','%20')    
@@ -12,6 +16,7 @@ def getAlbumArt( artist, track ):
     
     r = requests.get(urlargs)
     lfm_json = json.loads(r.text)
-    
+    if lfm_json['error'] == 10:
+	    return 'ERROR: Could not grab album art.'
     return (lfm_json['track']['album']['image'][3]['#text'])
 
