@@ -14,7 +14,6 @@ class Song:
 	def __init__( self, d_song ):
 		try:
 			if d_song == None:
-				print( 'ok u litle shit' )
 				self._ok = False
 				return
 			self._album = stagger.read_tag( d_song ).album
