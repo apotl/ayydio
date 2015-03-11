@@ -4,10 +4,18 @@ import stagger
 from stagger.id3 import *
 
 
+class SongError( Exception):
+
+	def __init__( self, reason ):
+		self.reason = 'ERROR in Song.py: ' + reason
+
 class Song:
 
 	def __init__( self, d_song ):
 		try:
+			if d_song == None:
+				self._ok = False
+				return
 			self._album = stagger.read_tag( d_song ).album
 			self._artist = stagger.read_tag( d_song ).artist
 			self._date = stagger.read_tag( d_song ).date
@@ -22,11 +30,11 @@ class Song:
 			self._aart = lastfm.getAlbumArt( self._artist, self._title )
 			self._ok = True
 		except IOError:
-			self._ok = False
+			raise SongError( 'File does not exist' )
 
 	def printInfo( self ):
 		if not self._ok:
-			return
+			raise SongError( 'Song not instantiated correctly' )
 		print( 'Album: ' + self._album ) 
 		print( 'Artist: ' + self._artist )
 		print( 'Date: ' + self._date )
@@ -39,21 +47,20 @@ class Song:
 		print( 'Art: ' + self._aart )
 
 	def getInfo( self ):
-		s = {}
 		if not self._ok:
-			s['file'] = ''
-		else:
-			s['album'] = self._album
-			s['artist'] = self._artist
-			s['date'] = self._date
-			s['file'] = self._file
-			s['genre'] = self._genre
-			s['title'] = self._title
-			s['aart'] = self._aart
-			s['track'] = self._track
-			s['ttrack'] = self._ttrack
-			s['disc'] = self._disc
-			s['tdisc'] = self._tdisc
-			s['comment'] = self._comment
-			s['aart'] = self._aart
+			raise SongError( 'Song not instantiated correctly' )
+		s = {}
+		s['album'] = self._album
+		s['artist'] = self._artist
+		s['date'] = self._date
+		s['file'] = self._file
+		s['genre'] = self._genre
+		s['title'] = self._title
+		s['aart'] = self._aart
+		s['track'] = self._track
+		s['ttrack'] = self._ttrack
+		s['disc'] = self._disc
+		s['tdisc'] = self._tdisc
+		s['comment'] = self._comment
+		s['aart'] = self._aart
 		return s

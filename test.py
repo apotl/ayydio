@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from mpd import MPDClient
-from lib.Song import Song
+from lib.Song import Song, SongError
 from lib.Database import Database
 
 def conToMpd():
@@ -26,15 +26,25 @@ def askSongLoc():
 def checkSong_py():
 	client = conToMpd()
 	print( 'Testing instantiation...', end = '' )
-	song_to_check = Song( askSongLoc() )
+	try:
+		song_to_check = Song( askSongLoc() )
+	except SongError as why:
+		song_to_check = Song( None )
+		print( why.reason )
 	print( 'Instantiation OK.' )
 
 	print( 'Testing getInfo()...', end = '' )
-	song_to_check.getInfo()
+	try:
+		song_to_check.getInfo()
+	except SongError as why:
+		print( why.reason )
 	print( 'getInfo() OK.' )
 
 	print( 'Testing printInfo()...', end = '' )
-	song_to_check.printInfo()
+	try:
+		song_to_check.printInfo()
+	except SongError as why:
+		print( why.reason )
 	print( 'printInfo() OK.' )
 
 	client.close()
