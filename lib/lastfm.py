@@ -18,5 +18,6 @@ def getAlbumArt( artist, track ):
     lfm_json = json.loads(r.text)
     if lfm_json['error'] == 10:
 	    return 'ERROR: Could not grab album art.'
-    return (lfm_json['track']['album']['image'][3]['#text'])
+    else: 
+        return (lfm_json['track']['album']['image'][3]['#text'])
 
