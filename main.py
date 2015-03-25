@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from mpd import MPDClient
 from lib.Song import Song
 
@@ -28,6 +29,7 @@ def makeChoice():
     print('(3) play')
     print('(4) next song')
     print('(5) show current playlist')
+    print('(6) search')
     print('(q) quit')
     choice = input('option: ')
     return choice 
@@ -37,6 +39,11 @@ def queueUri(uri):
         c.add(uri)
     except:
         pass    
+
+def searchdb(query):
+    print()
+    for result in c.search('file',str(query)):
+        print(result['file'])    
     
 while True:
     x = makeChoice()
@@ -52,7 +59,9 @@ while True:
         print('Current playlist:')
         for song in c.playlist():
             print (song)
-
+    elif x == '6':
+        query = input('Search string: ')
+        searchdb(query)
     elif x == 'q':
         break
 c.close()
