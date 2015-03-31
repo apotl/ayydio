@@ -63,14 +63,21 @@ def checkDatabase_py():
 	del db_to_check
 	print( 'Destruction OK.' )
 
-checking = True
-while checking == True:
-	choice = makeChoice()
-	if choice == '1':
-		checkSong_py()
-	elif choice == '2':
-		checkDatabase_py()
-	elif choice == 'e':
-		checking = False
-	else:
-		print( 'ERROR: Given option invalid' )
+def main():
+    checking = True
+    while checking == True:
+    	choice = makeChoice()
+    	if choice == '1':
+    		checkSong_py()
+    	elif choice == '2':
+    		checkDatabase_py()
+    	elif choice == 'e':
+    		checking = False
+    	else:
+    		print( 'ERROR: Given option invalid' )
+
+if __name__ == "__main__":
+    print("test.py is being run directly")
+    main()
+else:
+    print("test.py is being imported into another module")
