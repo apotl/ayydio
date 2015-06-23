@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import pprint
 from mpd import MPDClient
 from lib.Song import Song, SongError
 from lib.Database import Database
@@ -58,6 +59,11 @@ def checkDatabase_py():
 	song_to_check = Song( askSongLoc() )
 	db_to_check.addToDb( song_to_check )
 	print( 'addToDb() OK.' )
+
+	print( 'Testing listDbDir()...' )
+	song_dir_to_check = song_to_check._file.rsplit( '/' )[-2]
+	pprint.pprint( db_to_check.listDbDir( song_dir_to_check))
+	print( 'listDbDir() OK.' )
 
 	print( 'Testing destruction...', end = '' )
 	del db_to_check
