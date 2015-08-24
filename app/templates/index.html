@@ -6,7 +6,7 @@
 {% block content %}
 <center>
 <h1>Welcome to ayydio!</h1>
-	<audio controls autoplay name="media">
+	<audio controls name="media">
 		<source src="http://localhost:8000/" type="audio/mpeg">
 	</audio>
 <h4>art:</h4>
@@ -53,17 +53,17 @@
 		$.getJSON($SCRIPT_ROOT + '/api/playlist.json', {
 			}, function(data) {
 				$("#plnow").text(data.result[0]);
+				for( j = playlist.rows.length; j > 2; j--){
+					playlist.deleteRow(-1);
+				}
 				for(i = 2; i <= data.result.length; i++){
-						playlist.deleteRow(i);
 						var row = playlist.insertRow(i);
 						var c1 = row.insertCell(0);
 						var c2 = row.insertCell(1);
 						c1.innerHTML = i-1;
 						c2.innerHTML = data.result[i-1];
 						console.log(data.result[i-1]); 
-			
 				}
-				
 			
 			});
 		},5000);

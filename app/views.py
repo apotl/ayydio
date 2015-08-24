@@ -23,6 +23,10 @@ def skip():
 	c.timeout = 10
 	c.idletimeout = None
 	c.connect("localhost",6600)
+	try:
+		c.play(1)
+	except:
+		pass
 	if c.status()['playlistlength'] == '0':
 		return jsonify(status="failure")
 	c.delete( 0)
