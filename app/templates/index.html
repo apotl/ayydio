@@ -6,7 +6,7 @@
 {% block content %}
 <center>
 <h1>Welcome to ayydio!</h1>
-	<audio controls name="media">
+	<audio autoplay controls name="media">
 		<source src="http://localhost:8000/" type="audio/mpeg">
 	</audio>
 <h4>art:</h4>
@@ -55,6 +55,9 @@
 				$("#plnow").text(data.result[0]);
 				for( j = playlist.rows.length; j > 2; j--){
 					playlist.deleteRow(-1);
+				}
+				if ( data.result.length == 0){
+					$.getJSON($SCRIPT_ROOT + '/api/queue/random');
 				}
 				for(i = 2; i <= data.result.length; i++){
 						var row = playlist.insertRow(i);

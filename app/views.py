@@ -1,7 +1,9 @@
 from app import app
-from flask import render_template, jsonify, request
+from flask import render_template, jsonify, request, redirect, url_for
 from mpd import MPDClient
 from lib import Song, Database
+import random
+from urllib.parse import quote, unquote
 @app.route('/')
 @app.route('/index')
 def index():
@@ -31,6 +33,23 @@ def skip():
 		return jsonify(status="failure")
 	c.delete( 0)
 	return jsonify(status="success")
+
+@app.route('/api/queue/random')
+def queue_random():
+	c = MPDClient()
+	c.timeout = 10
+	c.idletimeout = None
+	c.connect("localhost",6600)
+	while True:
+		try:
+			randuri = random.choice(c.lsinfo(random.choice(c.lsinfo())['directory']))['file']
+			break
+		except IndexError:
+			print('problems queuing a certain song, trying another')
+		except KeyError:
+			print('problem queuing a certain song, trying another')
+	return redirect('/api/queue/'+quote(randuri))
+
 @app.route('/api/queue/<path:uri>')
 def queue(uri):
 	c = MPDClient()
@@ -38,7 +57,8 @@ def queue(uri):
 	c.idletimeout = None
 	c.connect("localhost",6600)
 	print(uri)
-	c.add(uri)
+	c.add(unquote(uri))
+	#c.add(quote(uri).encode('ascii', 'xmlcharrefreplace').decode())
 	if c.status()['state'] != 'play':
 		c.play(0)
 	return jsonify(status="success")
@@ -54,7 +74,7 @@ def queue_numbers():
 		try:
 			for ff in c.lsinfo(f['directory']):
 				try:
-					songs += '<tr onclick="$.getJSON(\'/api/queue/' + ff['file'] + '\')">'
+					songs += '<tr onclick="$.getJSON(\'/api/queue/' + quote(ff['file']) + '\')">'
 					songs += '<td>' + ff['artist'] + '</td>'
 					songs += '<td>' + ff['album'] + '</td>'
 					songs += '<td>' + ff['title'] + '</td>'
@@ -66,6 +86,7 @@ def queue_numbers():
 	return render_template("queue.html",
 				title='queue song',
 				songs = songs)
+
 
 @app.route('/api/nowplaying.json')
 def currsong():
