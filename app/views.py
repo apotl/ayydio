@@ -74,7 +74,7 @@ def queue_numbers():
 		try:
 			for ff in c.lsinfo(f['directory']):
 				try:
-					songs += '<tr onclick="$.getJSON(\'/api/queue/' + quote(ff['file']) + '\')">'
+					songs += '<tr onclick="$.getJSON(\'/api/queue/' + quote(ff['file']) + '\',alert(\'Song queued!\'))">'
 					songs += '<td>' + ff['artist'] + '</td>'
 					songs += '<td>' + ff['album'] + '</td>'
 					songs += '<td>' + ff['title'] + '</td>'
