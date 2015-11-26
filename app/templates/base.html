@@ -1,16 +1,16 @@
 <html>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
-  <head>
-    {% if title %}
-    <title>{{ title }} - ayydio</title>
-    {% else %}
-    <title>Welcome to ayydio</title>
-    {% endif %}
-  </head>
-  <body>
-    <div>Ayyd.io: <a href="/index">Home</a></div>
-    <hr>
-    {% block content %}{% endblock %}
-  </body>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+	<head>
+		{% if title %}
+		<title>{{ title }} - ayydio</title>
+		{% else %}
+		<title>Welcome to ayydio</title>
+		{% endif %}
+	</head>
+	<body>
+		<div>Ayyd.io: <a href="/index">Home</a> <a href="/queue">Queue</a></div>
+		<hr>
+		{% block content %}{% endblock %}
+	</body>
 </html>
 

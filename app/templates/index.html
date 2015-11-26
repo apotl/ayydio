@@ -6,94 +6,97 @@
 {% block content %}
 <center>
 <h1>Welcome to ayydio!</h1>
-  <audio controls autoplay name="media">
-    <source src="http://ad.floby.ml:8000/" type="audio/mpeg">
-   </audio>
+	<audio autoplay controls name="media">
+		<source src="http://localhost:8000/" type="audio/mpeg">
+	</audio>
 <h4>art:</h4>
 <img src= {{s._aart}}>
 </center>
 <script type=text/javascript>
-  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+	$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 </script>
 
 <table id=playlist width = "50%" class="table table-striped table-hover ">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>song uri</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr class="success">
-      <td >now:</td>
-      <td id=plnow>no</td>
-    </tr>
-    <tr id>
-      <td>queued:</td>
-      <td ></td>
-    </tr>
-    <tr id>
-      <td>queued:</td>
-      <td ></td>
-    </tr>
-    <tr id>
-      <td>queued:</td>
-      <td ></td>
-    </tr>
-    <tr id>
-      <td>queued:</td>
-      <td ></td>
-    </tr>
-   </tbody>
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>song uri</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr class="success">
+			<td >now:</td>
+			<td id=plnow>no</td>
+		</tr>
+		<tr id>
+			<td>queued:</td>
+			<td ></td>
+		</tr>
+		<tr id>
+			<td>queued:</td>
+			<td ></td>
+		</tr>
+		<tr id>
+			<td>queued:</td>
+			<td ></td>
+		</tr>
+		<tr id>
+			<td>queued:</td>
+			<td ></td>
+		</tr>
+	</tbody>
 </table>
 <script type=text/javascript>
-   var playlist = document.getElementById("playlist");
-   $(function () {
-    setInterval(function() {  
-    $.getJSON($SCRIPT_ROOT + '/api/playlist.json', {
-      }, function(data) {
-        $("#plnow").text(data.result[0]);
-        for(i = 2; i <= data.result.length; i++){
-            playlist.deleteRow(i);
-            var row = playlist.insertRow(i);
-            var c1 = row.insertCell(0);
-            var c2 = row.insertCell(1);
-            c1.innerHTML = i-1;
-            c2.innerHTML = data.result[i-1];
-            console.log(data.result[i-1]); 
-       
-        }
-        
-      
-       });
-    },5000);
-    return false;
+	var playlist = document.getElementById("playlist");
+	$(function () {
+		setInterval(function() {
+		$.getJSON($SCRIPT_ROOT + '/api/playlist.json', {
+			}, function(data) {
+				$("#plnow").text(data.result[0]);
+				for( j = playlist.rows.length; j > 2; j--){
+					playlist.deleteRow(-1);
+				}
+				if ( data.result.length == 0){
+					$.getJSON($SCRIPT_ROOT + '/api/queue/random');
+				}
+				for(i = 2; i <= data.result.length; i++){
+						var row = playlist.insertRow(i);
+						var c1 = row.insertCell(0);
+						var c2 = row.insertCell(1);
+						c1.innerHTML = i-1;
+						c2.innerHTML = data.result[i-1];
+						console.log(data.result[i-1]); 
+				}
+			
+			});
+		},5000);
+		return false;
 });
 
 </script>
 <h3>Controls:</h3>
-<p><a href=# id=calculate class="btn btn-info btn-xs">Next</a>
+<p><a onclick="$.getJSON('/api/skip',alert('Song skipped!'))" id=calculate class="btn btn-info btn-xs">Skip</a>
 {% endblock %}
 <!--<script type=text/javascript>
-   $(function () {
-    $('a#refresh').bind('click', function() {  
-    $.getJSON($SCRIPT_ROOT + '/api/playlist.json', {
-      }, function(data) {
-        $("#plnow").text(data.result[0]);
-        var playlist = document.getElementById("playlist");
-        for(i = 2; i <= data.result.length; i++){
-            playlist.deleteRow(i);
-            var row = playlist.insertRow(i);
-            var c1 = row.insertCell(0);
-            var c2 = row.insertCell(1);
-            c1.innerHTML = i-1;
-            c2.innerHTML = data.result[i-1];
-        
-        }
-       
-         });
-    });
-    return false;
+	$(function () {
+		$('a#refresh').bind('click', function() {
+		$.getJSON($SCRIPT_ROOT + '/api/playlist.json', {
+			}, function(data) {
+				$("#plnow").text(data.result[0]);
+				var playlist = document.getElementById("playlist");
+				for(i = 2; i <= data.result.length; i++){
+						playlist.deleteRow(i);
+						var row = playlist.insertRow(i);
+						var c1 = row.insertCell(0);
+						var c2 = row.insertCell(1);
+						c1.innerHTML = i-1;
+						c2.innerHTML = data.result[i-1];
+				
+				}
+			
+				});
+		});
+		return false;
 });
 
 </script> -->

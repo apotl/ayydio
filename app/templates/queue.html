@@ -1,0 +1,50 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.6.0/bootstrap-table.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.6.0/bootstrap-table.min.js"></script>
+
+{% extends "base.html" %}
+{% block content %}
+<center>
+<h1>Welcome to ayydio!</h1>
+	<audio controls autoplay name="media">
+		<source src="http://localhost:8000/" type="audio/mpeg">
+	</audio>
+
+<table id=playlist width = "50%" class="table table-striped table-hover ">
+	<thead>
+		<tr>
+			<th>Artist</th>
+			<th>Album</th>
+			<th>Title</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{ songs|safe }}
+	</tbody>
+</table>
+<h3>Controls:</h3>
+<p><a onclick="$.getJSON('/api/skip', alert('Song skipped!')" id=calculate class="btn btn-info btn-xs">Skip</a>
+{% endblock %}
+<!--<script type=text/javascript>
+	$(function () {
+		$('a#refresh').bind('click', function() {
+		$.getJSON($SCRIPT_ROOT + '/api/playlist.json', {
+			}, function(data) {
+				$("#plnow").text(data.result[0]);
+				var playlist = document.getElementById("playlist");
+				for(i = 2; i <= data.result.length; i++){
+						playlist.deleteRow(i);
+						var row = playlist.insertRow(i);
+						var c1 = row.insertCell(0);
+						var c2 = row.insertCell(1);
+						c1.innerHTML = i-1;
+						c2.innerHTML = data.result[i-1];
+				
+				}
+			
+				});
+		});
+		return false;
+});
+
+</script> -->

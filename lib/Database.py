@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 from mpd import MPDClient
+from lib import Song
 
 def conToMpd():
 	con = MPDClient()
@@ -28,9 +29,9 @@ class Database:
 			self._con.update( temp )
 		
 	def listDbDir( self, dir_loc ):
-		listings = {}
+		listings = []
 		for listing in self._con.lsinfo( dir_loc ):
-			temp = Song( listing['file'] )
+			temp = Song.Song( '/home/alec/Music/' + listing['file'] )
 			listings.append( temp )
 		return listings
 	
