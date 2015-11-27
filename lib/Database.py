@@ -11,7 +11,8 @@ def conToMpd():
 
 class Database:
 
-	def __init__( self ):
+	def __init__( self, music_root ):
+		self._music_root = music_root
 		self._con = MPDClient()
 		self._con.timeout = 10
 		self._con.idletimeout = None
@@ -31,7 +32,7 @@ class Database:
 	def listDbDir( self, dir_loc ):
 		listings = []
 		for listing in self._con.lsinfo( dir_loc ):
-			temp = Song.Song( '/home/alec/Music/' + listing['file'] )
+			temp = Song.Song( self._music_root + listing['file'] )
 			listings.append( temp )
 		return listings
 	
