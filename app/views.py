@@ -7,7 +7,7 @@ from urllib.parse import quote, unquote
 
 music_root = '/home/alec/Music/'
 
-def print_tags(c,uri):
+def echo_tags(c,uri):
 	songs = ''
 	if uri == '/':
 		for ff in c.lsinfo('/'):
@@ -19,7 +19,7 @@ def print_tags(c,uri):
 				songs += '</tr>'
 			except KeyError:
 				try:
-					songs += print_tags(c, ff['directory'])
+					songs += echo_tags(c, ff['directory'])
 				except KeyError:
 					pass
 	else:
@@ -32,10 +32,21 @@ def print_tags(c,uri):
 				songs += '</tr>'
 			except KeyError:
 				try:
-					songs += print_tags(c, ff['directory'] )
+					songs += echo_tags(c, ff['directory'] )
 				except KeyError:
 					pass
 	return songs
+
+def get_rand_song_uri(c,uri):
+	try:
+		randentry = random.choice(c.lsinfo(uri))
+		randuri = randentry['file']
+	except KeyError:
+		try:
+			randuri = get_rand_song_uri(c,randentry['directory'])
+		except KeyError:
+			pass
+	return randuri
 
 
 @app.route('/')
@@ -76,12 +87,13 @@ def queue_random():
 	c.connect("localhost",6600)
 	while True:
 		try:
-			randuri = random.choice(c.lsinfo(random.choice(c.lsinfo())['directory']))['file']
+			randuri = get_rand_song_uri(c,'/')
 			break
 		except IndexError:
 			print('problems queuing a certain song, trying another')
 		except KeyError:
 			print('problem queuing a certain song, trying another')
+	print(randuri)
 	return redirect('/api/queue/'+quote(randuri))
 
 @app.route('/api/queue/<path:uri>')
@@ -102,7 +114,7 @@ def queue_numbers():
 	c.timeout = 10
 	c.idletimeout = None
 	c.connect("localhost",6600)
-	songs = print_tags(c,'/')
+	songs = echo_tags(c,'/')
 	
 	return render_template("queue.html",
 				title='queue song',
