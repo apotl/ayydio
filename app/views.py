@@ -9,32 +9,20 @@ music_root = '/home/alec/Music/'
 
 def echo_tags(c,uri):
 	songs = ''
-	if uri == '/':
-		for ff in c.lsinfo('/'):
+	for ff in c.lsinfo(uri):
+		try:
+			songs += '<tr onclick="$.getJSON(\'/api/queue/' + quote(ff['file']) + '\',alert(\'Song queued!\'))">'
+			songs += '<td>' + ff['artist'] + '</td>'
+			songs += '<td>' + ff['album'] + '</td>'
+			songs += '<td>' + ff['title'] + '</td>'
+			songs += '</tr>'
+		except KeyError:
 			try:
-				songs += '<tr onclick="$.getJSON(\'/api/queue/' + quote(ff['file']) + '\',alert(\'Song queued!\'))">'
-				songs += '<td>' + ff['artist'] + '</td>'
-				songs += '<td>' + ff['album'] + '</td>'
-				songs += '<td>' + ff['title'] + '</td>'
-				songs += '</tr>'
+				songs += echo_tags(c, ff['directory'] )
 			except KeyError:
-				try:
-					songs += echo_tags(c, ff['directory'])
-				except KeyError:
-					pass
-	else:
-		for ff in c.lsinfo(uri):
-			try:
-				songs += '<tr onclick="$.getJSON(\'/api/queue/' + quote(ff['file']) + '\',alert(\'Song queued!\'))">'
-				songs += '<td>' + ff['artist'] + '</td>'
-				songs += '<td>' + ff['album'] + '</td>'
-				songs += '<td>' + ff['title'] + '</td>'
-				songs += '</tr>'
-			except KeyError:
-				try:
-					songs += echo_tags(c, ff['directory'] )
-				except KeyError:
-					pass
+				pass
+		except TypeError:
+			print('type error with "%s"' % ff['file'])
 	return songs
 
 def get_rand_song_uri(c,uri):
