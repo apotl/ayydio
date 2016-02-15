@@ -114,7 +114,7 @@ def currsong():
 	c.timeout = 10
 	c.idletimeout = None
 	c.connect("localhost",6600)
-	c.update()   
+	#c.update()   
 	return jsonify(result=c.currentsong())
 
 @app.route('/api/playlist.json')
@@ -123,5 +123,5 @@ def pljson():
 	c.timeout = 10
 	c.idletimeout = None
 	c.connect("localhost",6600)
-	c.update()   
+	#c.update()   
 	return jsonify(result= c.playlist())
