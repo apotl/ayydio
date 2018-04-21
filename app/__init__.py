@@ -6,7 +6,7 @@ from mpd import MPDClient
 c = MPDClient()
 c.timeout = 10
 c.idletimeout = None
-c.connect("localhost",6600)
+c.connect("127.0.0.1",6600)
 c.random(0)
 c.repeat(0)
 c.consume(1)
